@@ -1,0 +1,8 @@
+{
+  "liveServer.settings.defaultBrowser": "chrome",
+  "liveServer.settings.port": 5500,
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on"
+}

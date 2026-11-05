@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="burgundyFav" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#800020" />
+      <stop offset="100%" stop-color="#4A0E17" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#burgundyFav)"/>
+  <!-- Island Silhouette -->
+  <path d="M 14 46 C 20 40, 28 44, 34 38 C 40 34, 48 37, 52 46 C 48 50, 24 53, 14 46 Z" fill="#9E2A47" opacity="0.7"/>
+  <!-- Flight path -->
+  <path d="M 12 48 Q 30 35, 48 16" fill="none" stroke="#F4E8EA" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <!-- Airplane -->
+  <g transform="translate(42, 18) rotate(-40) scale(1.1)">
+    <path d="M 0 -8 C 1 -4, 2 6, 2 12 L -2 12 C -2 6, -1 -4, 0 -8 Z" fill="#FFFFFF"/>
+    <path d="M 0 0 L 12 8 L 12 10 L 0 6 L -12 10 L -12 8 Z" fill="#FFFFFF"/>
+    <path d="M 0 9 L 6 13 L 6 14 L 0 12 L -6 14 L -6 13 Z" fill="#FFFFFF"/>
+  </g>
+</svg>

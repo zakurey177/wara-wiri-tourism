@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "name": "Wara Wiri - E-Tourism",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "liveServer.settings.defaultBrowser": "chrome",
+    "liveServer.settings.port": 5500,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  }
+}

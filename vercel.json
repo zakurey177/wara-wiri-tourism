@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "wara-wiri-tourism",
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

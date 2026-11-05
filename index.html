@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wara Wiri - Platform E-Tourism & Pariwisata (Traveloka Lite)</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            burgundy: {
+              DEFAULT: '#6B1D2F',
+              50: '#FDF7F8',
+              100: '#F9ECEE',
+              200: '#F4D4D8',
+              300: '#E7A4AC',
+              400: '#D56D7A',
+              500: '#9E2A47',
+              600: '#800020',
+              700: '#6B1D2F',
+              800: '#4A0E17',
+              900: '#2E090F'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Leaflet.js CSS & JS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#F8F9FA] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-rose-100 selection:text-[#6B1D2F]">
+
+  <!-- Top Notification Bar -->
+  <div class="bg-gradient-to-r from-[#4A0E17] via-[#6B1D2F] to-[#800020] text-white text-xs py-2 px-4 text-center font-medium">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="hidden sm:flex items-center gap-2">
+        <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">Traveloka Lite</span>
+        <span>Eksplorasi 29 Destinasi Terbaik di Indonesia, Asia & Eropa</span>
+      </div>
+      <div class="mx-auto sm:mx-0 flex items-center gap-4 text-[11px]">
+        <span>✨ Bebas Reschedule & Refund Transparan Langsung di Aplikasi</span>
+        <span class="hidden md:inline">•</span>
+        <span class="hidden md:inline">📞 Hotline 24 Jam: 021-500-WARA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar with Bespoke SVG Icons & Spacing -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity flex-shrink-0">
+        <img src="assets/logo.svg" alt="Wara Wiri" class="h-11 w-auto">
+      </a>
+
+      <!-- Desktop Navigation Menu with Elegant SVG Icons and generous spacing -->
+      <nav class="hidden xl:flex items-center gap-1.5 2xl:gap-2.5 text-slate-700">
+        
+        <!-- Pesawat -->
+        <button onclick="window.SearchManagerInstance.switchTab('flight'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+            </svg>
+          </span>
+          <span>Pesawat</span>
+        </button>
+
+        <!-- Bus Antar-Kota -->
+        <button onclick="window.SearchManagerInstance.switchTab('bus'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 6v6m8-6v6M4 18h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+              <path d="M6 18v2m12-2v2"/>
+              <circle cx="7" cy="14" r="1" fill="currentColor"/>
+              <circle cx="17" cy="14" r="1" fill="currentColor"/>
+            </svg>
+          </span>
+          <span>Bus Antar-Kota</span>
+        </button>
+
+        <!-- Hotel -->
+        <button onclick="window.SearchManagerInstance.switchTab('hotel'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M9 7h1m4 0h1m-6 4h1m4 0h1m-6 4h1m4 0h1"/>
+              <path d="M10 21v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4"/>
+            </svg>
+          </span>
+          <span>Hotel</span>
+        </button>
+
+        <!-- Wisata -->
+        <button onclick="window.SearchManagerInstance.switchTab('wisata'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/>
+            </svg>
+          </span>
+          <span>Wisata</span>
+        </button>
+
+        <!-- Promo & Paket -->
+        <button onclick="window.SearchManagerInstance.switchTab('bundling'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-extrabold text-[#800020] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center group-hover:bg-[#800020] group-hover:text-white transition-all shadow-sm border border-amber-200/60">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+          </span>
+          <span>Promo & Paket</span>
+        </button>
+
+        <!-- Itinerary Planner -->
+        <a href="#itinerarySection" class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <path d="m9 16 2 2 4-4"/>
+            </svg>
+          </span>
+          <span>Itinerary</span>
+        </a>
+
+        <!-- Peta Destinasi -->
+        <a href="#interactiveMapSection" class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-lg bg-rose-50/70 text-[#6B1D2F] flex items-center justify-center shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/>
+              <circle cx="12" cy="10" r="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span>Peta</span>
+        </a>
+
+        <!-- Live Chat 24/7 Shortcut -->
+        <button onclick="window.LiveChatInstance.toggleChat()" 
+                class="group whitespace-nowrap px-2.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-[#6B1D2F] hover:bg-rose-50/80 transition-all flex items-center gap-1.5" title="Live Chat Bantuan 24/7">
+          <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-[#6B1D2F] group-hover:text-white transition-all shadow-sm border border-emerald-200/60">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </span>
+          <span>Live Chat</span>
+        </button>
+
+        <!-- DEDICATED NAVBAR BUTTON: PESANAN SAYA & HISTORY -->
+        <a href="#userDashboardSection" onclick="window.filterDashboardBookings('all')" 
+           class="whitespace-nowrap px-3 py-2 rounded-xl text-xs font-black text-[#6B1D2F] bg-rose-100/70 hover:bg-[#6B1D2F] hover:text-white transition-all flex items-center gap-2 border border-rose-200 shadow-sm group">
+          <svg class="w-4 h-4 text-[#6B1D2F] group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+            <path d="M13 5v2m0 4v2m0 4v2"/>
+          </svg>
+          <span>Pesanan Saya</span>
+          <span id="navBookingBadge" class="bg-[#6B1D2F] text-white text-[10px] font-black px-1.5 py-0.5 rounded-full group-hover:bg-white group-hover:text-[#6B1D2F]">
+            3
+          </span>
+        </a>
+
+      </nav>
+
+      <!-- Right Action Tools (Weather, Wishlist, User Profile Button) -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        
+        <!-- Live Weather Widget Pill -->
+        <button onclick="window.WeatherServiceInstance.showWeatherModal(window.WeatherServiceInstance.currentCityId)" 
+                class="hidden md:flex items-center gap-1.5 bg-rose-50/80 hover:bg-rose-100 text-[#6B1D2F] px-2.5 py-1.5 rounded-full border border-rose-200 text-xs font-bold transition-all shadow-sm group" title="Lihat Perkiraan Cuaca Real-Time">
+          <span id="navWeatherIcon" class="text-sm group-hover:scale-110 transition-transform">⛅</span>
+          <span id="navWeatherCity" class="text-slate-700">Bali</span>
+          <span id="navWeatherTemp" class="font-extrabold text-[#800020]">29°C</span>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button onclick="window.openUserProfileDrawer()" 
+                class="relative p-2 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-[#6B1D2F] transition-colors" title="Buka Wishlist">
+          <svg class="w-4 h-4 text-rose-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span id="wishlistCountBadge" class="absolute -top-1 -right-1 bg-[#6B1D2F] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+            4
+          </span>
+        </button>
+
+        <!-- DEDICATED USER PROFILE BUTTON (Opens Drawer & Links to Dashboard) -->
+        <button onclick="window.openUserProfileDrawer()" 
+                class="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-white hover:bg-slate-50 border border-slate-200 shadow-sm transition-all text-left">
+          <div class="relative">
+            <img id="navUserAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-8 h-8 rounded-full object-cover ring-2 ring-[#6B1D2F]">
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1">
+              <span id="navUserName" class="text-xs font-bold text-slate-800 leading-none">Azka</span>
+              <span class="text-[9px] bg-amber-100 text-amber-800 font-extrabold px-1 rounded leading-tight">PLATINUM</span>
+            </div>
+            <span class="text-[10px] text-[#6B1D2F] font-bold block">Akun & Profil ▾</span>
+          </div>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="xl:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer Collapse -->
+    <div id="mobileNavDrawer" class="hidden xl:hidden bg-white border-b border-slate-200 px-4 py-3 space-y-2">
+      <!-- Direct Account & History Button for Mobile -->
+      <a href="#userDashboardSection" onclick="document.getElementById('mobileNavDrawer').classList.add('hidden');" 
+         class="w-full bg-[#6B1D2F] text-white p-2.5 rounded-xl text-xs font-black flex items-center justify-between shadow-sm">
+        <span class="flex items-center gap-2">
+          <span>🎫</span>
+          <span>Pesanan & Riwayat Transaksi Saya</span>
+        </span>
+        <span class="bg-white/20 px-2 py-0.5 rounded text-[10px]">3 Tiket</span>
+      </a>
+
+      <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+        <button onclick="window.SearchManagerInstance.switchTab('flight'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" class="p-2.5 rounded-lg bg-slate-50 text-slate-700 flex items-center gap-2">
+          <span class="text-rose-700 font-bold">✈</span> Pesawat
+        </button>
+        <button onclick="window.SearchManagerInstance.switchTab('bus'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" class="p-2.5 rounded-lg bg-slate-50 text-slate-700 flex items-center gap-2">
+          <span class="text-rose-700 font-bold">🚌</span> Bus Antar-Kota
+        </button>
+        <button onclick="window.SearchManagerInstance.switchTab('hotel'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" class="p-2.5 rounded-lg bg-slate-50 text-slate-700 flex items-center gap-2">
+          <span class="text-rose-700 font-bold">🏨</span> Hotel
+        </button>
+        <button onclick="window.SearchManagerInstance.switchTab('wisata'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" class="p-2.5 rounded-lg bg-slate-50 text-slate-700 flex items-center gap-2">
+          <span class="text-rose-700 font-bold">🎡</span> Wisata
+        </button>
+        <button onclick="window.SearchManagerInstance.switchTab('bundling'); document.getElementById('searchTabsNav').scrollIntoView({behavior:'smooth'});" class="p-2.5 rounded-lg bg-rose-50 text-[#6B1D2F] flex items-center gap-2">
+          <span class="text-amber-600 font-bold">🎁</span> Promo & Paket
+        </button>
+        <a href="#itinerarySection" class="p-2.5 rounded-lg bg-slate-50 text-slate-700 flex items-center gap-2">
+          <span class="text-rose-700 font-bold">🗺</span> Itinerary
+        </a>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+        <button onclick="window.WeatherServiceInstance.showWeatherModal(window.WeatherServiceInstance.currentCityId)" class="text-[#6B1D2F] font-bold">
+          ⛅ Cek Cuaca
+        </button>
+        <button onclick="window.LiveChatInstance.toggleChat(); document.getElementById('mobileNavDrawer').classList.add('hidden');" class="text-emerald-700 font-extrabold flex items-center gap-1">
+          💬 Live Chat 24/7
+        </button>
+        <button onclick="window.openUserProfileDrawer()" class="text-[#6B1D2F] font-bold">
+          👤 Profil
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Calm Burgundy Palette & Lite Booking Bar -->
+  <section class="relative hero-backdrop text-white pt-12 pb-24 sm:pt-16 sm:pb-32 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Headline & Tagline -->
+      <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold mb-4 border border-white/20">
+          <span class="w-2 h-2 rounded-full bg-rose-300 animate-ping"></span>
+          <span>Platform E-Tourism Ringan & Terpercaya #TravelokaLite</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight sm:leading-tight">
+          Jelajahi Pesona <span class="text-rose-200 underline decoration-rose-300/40">Nusantara</span>, Kemegahan Asia & Keindahan Eropa
+        </h1>
+        <p class="mt-3.5 text-sm sm:text-base text-rose-100/90 font-medium max-w-2xl mx-auto leading-relaxed">
+          Pesan tiket penerbangan internasional, bus antar-kota di Indonesia, hotel ternama dunia, dan susun itinerary liburanmu tanpa beban.
+        </p>
+      </div>
+
+      <!-- Main Search Box Container -->
+      <div class="bg-white rounded-3xl shadow-2xl p-4 sm:p-6 text-slate-800 border border-slate-100">
+        
+        <!-- Search Tabs Nav with professional SVG icons -->
+        <div id="searchTabsNav" class="flex items-center gap-2 pb-4 mb-4 border-b border-slate-100 overflow-x-auto no-scrollbar">
+          
+          <button data-tab="flight" onclick="window.SearchManagerInstance.switchTab('flight')" 
+                  class="hero-search-tab bg-[#6B1D2F] text-white shadow-md px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+            </svg>
+            <span>Tiket Pesawat</span>
+          </button>
+
+          <button data-tab="bus" onclick="window.SearchManagerInstance.switchTab('bus')" 
+                  class="hero-search-tab text-slate-600 hover:bg-slate-100 bg-transparent px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 6v6m8-6v6M4 18h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+              <path d="M6 18v2m12-2v2"/>
+              <circle cx="7" cy="14" r="1" fill="currentColor"/>
+              <circle cx="17" cy="14" r="1" fill="currentColor"/>
+            </svg>
+            <span>Tiket Bus</span>
+          </button>
+
+          <button data-tab="hotel" onclick="window.SearchManagerInstance.switchTab('hotel')" 
+                  class="hero-search-tab text-slate-600 hover:bg-slate-100 bg-transparent px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M9 7h1m4 0h1m-6 4h1m4 0h1m-6 4h1m4 0h1"/>
+              <path d="M10 21v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4"/>
+            </svg>
+            <span>Hotel Ternama</span>
+          </button>
+
+          <button data-tab="wisata" onclick="window.SearchManagerInstance.switchTab('wisata')" 
+                  class="hero-search-tab text-slate-600 hover:bg-slate-100 bg-transparent px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/>
+            </svg>
+            <span>Wisata & Atraksi</span>
+          </button>
+
+          <button data-tab="bundling" onclick="window.SearchManagerInstance.switchTab('bundling')" 
+                  class="hero-search-tab text-slate-600 hover:bg-slate-100 bg-transparent px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+            <span>Bundling Hemat</span>
+          </button>
+        </div>
+
+        <!-- Search Form Fields -->
+        <form id="heroSearchForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            
+            <!-- Origin / Dari -->
+            <div id="originInputWrapper" class="relative bg-slate-50 hover:bg-slate-100/80 p-3 rounded-2xl border border-slate-200 transition-colors">
+              <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">
+                Dari (Asal Keberangkatan)
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 flex items-center justify-center text-[#6B1D2F]">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </span>
+                <select id="searchOriginSelect" class="w-full bg-transparent font-bold text-slate-800 text-sm focus:outline-none cursor-pointer">
+                  <!-- Populated by js/search.js -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Destination / Tujuan -->
+            <div class="relative bg-slate-50 hover:bg-slate-100/80 p-3 rounded-2xl border border-slate-200 transition-colors">
+              <label id="destInputLabel" class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">
+                Ke (Kota Tujuan)
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 flex items-center justify-center text-rose-600">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <select id="searchDestSelect" class="w-full bg-transparent font-bold text-slate-800 text-sm focus:outline-none cursor-pointer">
+                  <!-- Populated by js/search.js -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Departure Date -->
+            <div class="relative bg-slate-50 hover:bg-slate-100/80 p-3 rounded-2xl border border-slate-200 transition-colors">
+              <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">
+                Tanggal Pergi
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 flex items-center justify-center text-slate-500">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                <input type="date" id="searchDateInput" value="2026-11-20" class="w-full bg-transparent font-bold text-slate-800 text-sm focus:outline-none cursor-pointer">
+              </div>
+            </div>
+
+            <!-- Passengers / Guests -->
+            <div class="relative bg-slate-50 hover:bg-slate-100/80 p-3 rounded-2xl border border-slate-200 transition-colors">
+              <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">
+                Penumpang & Kelas
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 flex items-center justify-center text-slate-500">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <select id="searchPassengerSelect" class="w-full bg-transparent font-bold text-slate-800 text-sm focus:outline-none cursor-pointer">
+                  <option value="1">1 Dewasa (Ekonomi)</option>
+                  <option value="2">2 Dewasa (Ekonomi)</option>
+                  <option value="3">3 Dewasa (Ekonomi)</option>
+                  <option value="4">Keluarga (2 Dewasa + 2 Anak)</option>
+                  <option value="bisnis">1 Dewasa (Bisnis / Suite)</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Action Row -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+              <span class="text-emerald-600 font-bold">✓ Harga Final Realistis IDR</span>
+              <span>•</span>
+              <span>Tanpa Biaya Tersembunyi</span>
+              <span>•</span>
+              <span>Reschedule Mudah</span>
+            </div>
+
+            <button type="submit" 
+                    class="w-full sm:w-auto bg-[#6B1D2F] hover:bg-[#800020] text-white font-black text-sm px-8 py-3.5 rounded-2xl shadow-lg shadow-rose-900/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-98">
+              <span>Cari Tiket & Jadwal</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Quick Popular Destination Badges -->
+      <div class="mt-6 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs font-semibold">
+        <span class="text-rose-200 text-[11px] uppercase tracking-wider font-bold whitespace-nowrap">Destinasi Favorit:</span>
+        <button onclick="window.selectDestinationFromMap('bali', 'Bali')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🌴 Bali</button>
+        <button onclick="window.selectDestinationFromMap('lbj', 'Labuan Bajo')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🦎 Labuan Bajo</button>
+        <button onclick="window.selectDestinationFromMap('yog', 'Yogyakarta')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🏛️ Yogyakarta</button>
+        <button onclick="window.selectDestinationFromMap('tyo', 'Tokyo')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🗼 Tokyo</button>
+        <button onclick="window.selectDestinationFromMap('sin', 'Singapore')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🦁 Singapore</button>
+        <button onclick="window.selectDestinationFromMap('par', 'Paris')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🥐 Paris</button>
+        <button onclick="window.selectDestinationFromMap('lon', 'London')" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white px-3 py-1 rounded-full whitespace-nowrap transition-colors">🇬🇧 London</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Destination Map Section -->
+  <section id="interactiveMapSection" class="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-rose-50 text-[#6B1D2F] px-3 py-1 rounded-full text-xs font-bold mb-2 border border-rose-100">
+          <span>🗺️ Fitur Unggulan UI/UX</span>
+          <span>•</span>
+          <span>Peta Interaktif Destinasi</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-800">
+          Jelajahi 29 Kota Tujuan Langsung dari Peta
+        </h2>
+        <p class="text-sm text-slate-500 mt-1 max-w-xl">
+          Klik pin beraksen Calm Burgundy pada peta untuk melihat gambaran kota, prakiraan cuaca lokal, dan langsung memilihnya sebagai tujuan penerbangan atau bus.
+        </p>
+      </div>
+
+      <!-- Map Region Filters -->
+      <div class="flex items-center gap-1.5 bg-white p-1 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
+        <button onclick="window.DestinationMapInstance.filterRegion('all'); updateMapFilterStyle(this);" 
+                class="map-filter-btn bg-[#6B1D2F] text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">
+          Semua (29)
+        </button>
+        <button onclick="window.DestinationMapInstance.filterRegion('indonesia'); updateMapFilterStyle(this);" 
+                class="map-filter-btn text-slate-600 hover:bg-slate-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">
+          🇮🇩 Indonesia (10)
+        </button>
+        <button onclick="window.DestinationMapInstance.filterRegion('asia'); updateMapFilterStyle(this);" 
+                class="map-filter-btn text-slate-600 hover:bg-slate-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">
+          🌏 Asia (12)
+        </button>
+        <button onclick="window.DestinationMapInstance.filterRegion('eropa'); updateMapFilterStyle(this);" 
+                class="map-filter-btn text-slate-600 hover:bg-slate-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">
+          🌍 Eropa (7)
+        </button>
+      </div>
+    </div>
+
+    <!-- Map Canvas Container (Esri World Street Map Layer - No watermark & High Precision) -->
+    <div class="relative bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+      <div id="interactiveMap" style="height: 480px; width: 100%;"></div>
+      <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs text-slate-700 shadow-md border border-slate-200 hidden sm:flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span><b>Peta Aktif:</b> Klik pin kota untuk melihat tarif mulai dari dan cuaca real-time.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Search Results & Real-Time Filter Section -->
+  <section id="searchResultsSection" class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="flex flex-col lg:flex-row gap-8 items-start">
+      
+      <!-- Left Sticky Sidebar: Real-Time Filters -->
+      <aside class="w-full lg:w-72 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-6 lg:sticky lg:top-24">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="font-black text-slate-800 text-base flex items-center gap-2">
+            <span>⚙️</span> Filter Perjalanan
+          </h3>
+          <button onclick="window.resetSearchFilters()" class="text-xs font-bold text-[#6B1D2F] hover:underline">
+            Reset
+          </button>
+        </div>
+
+        <!-- 1. Max Price Range Slider -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-bold text-slate-700">Harga Maksimal</label>
+            <span id="filterPriceValue" class="text-xs font-extrabold text-[#800020]">Rp 20.000.000</span>
+          </div>
+          <input type="range" id="filterPriceRange" min="200000" max="20000000" step="100000" value="20000000" 
+                 class="w-full accent-[#6B1D2F] cursor-pointer">
+          <div class="flex justify-between text-[10px] text-slate-400 mt-1 font-semibold">
+            <span>Rp 200rb</span>
+            <span>Rp 20jt+</span>
+          </div>
+        </div>
+
+        <!-- 2. Transit Filter (Flight only) -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-2">Jenis Penerbangan / Transit</label>
+          <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold text-slate-600">
+            <button data-transit="all" class="filter-transit-btn bg-[#6B1D2F] text-white py-1.5 rounded-lg transition-all">Semua</button>
+            <button data-transit="direct" class="filter-transit-btn py-1.5 rounded-lg transition-all">Langsung</button>
+            <button data-transit="transit" class="filter-transit-btn py-1.5 rounded-lg transition-all">Transit</button>
+          </div>
+        </div>
+
+        <!-- 3. Hotel Stars Filter -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-2">Kelas Bintang Hotel</label>
+          <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold text-slate-600">
+            <button data-stars="all" class="filter-star-btn bg-[#6B1D2F] text-white py-1.5 rounded-lg transition-all">Semua</button>
+            <button data-stars="4" class="filter-star-btn py-1.5 rounded-lg transition-all">⭐ 4+</button>
+            <button data-stars="5" class="filter-star-btn py-1.5 rounded-lg transition-all">⭐ 5 Luxury</button>
+          </div>
+        </div>
+
+        <!-- 4. Facilities Highlights -->
+        <div class="pt-2 border-t border-slate-100">
+          <label class="text-xs font-bold text-slate-700 block mb-2">Fasilitas Pilihan</label>
+          <div class="space-y-1.5 text-xs text-slate-600 font-medium">
+            <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900">
+              <input type="checkbox" checked class="accent-[#6B1D2F] rounded">
+              <span>Sarapan Gratis / Makanan Onboard</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900">
+              <input type="checkbox" checked class="accent-[#6B1D2F] rounded">
+              <span>Bebas Reschedule / Refund Transparan</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer hover:text-slate-900">
+              <input type="checkbox" checked class="accent-[#6B1D2F] rounded">
+              <span>Bagasi Kabin + Bagasi Terdaftar</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Sorting selector -->
+        <div class="pt-2 border-t border-slate-100">
+          <label class="text-xs font-bold text-slate-700 block mb-1">Urutkan Berdasarkan</label>
+          <select onchange="window.SearchManagerInstance.updateSort(this.value)" class="w-full bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 p-2 rounded-xl focus:outline-none cursor-pointer">
+            <option value="cheapest">Harga Termurah</option>
+            <option value="fastest">Durasi Tercepat</option>
+            <option value="rating">Rating Tertinggi</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Right Main Content: Search Results List -->
+      <main class="flex-1 w-full space-y-4">
+        
+        <!-- Results Header -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 id="searchResultsTitle" class="text-lg font-black text-slate-800">
+              Penerbangan ke <span class="text-[#800020]">Bali</span>
+            </h3>
+            <span id="searchResultCount" class="text-xs text-slate-500 font-semibold">
+              Menampilkan jadwal terbaik
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-slate-400">Jaminan:</span>
+            <span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-bold border border-emerald-200">
+              ✓ 100% Real-World IDR Pricing
+            </span>
+          </div>
+        </div>
+
+        <!-- Results Grid Container -->
+        <div id="searchResultsGrid" class="space-y-3.5">
+          <!-- Dynamically populated by js/search.js -->
+        </div>
+
+      </main>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- DEDICATED SECTION: AKUN PENGGUNA & RIWAYAT PEMESANAN (USER DASHBOARD)    -->
+  <!-- Langsung terlihat di halaman utama tanpa harus mencari tombol drawer!     -->
+  <!-- ========================================================================= -->
+  <section id="userDashboardSection" class="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
+      
+      <!-- Section Header -->
+      <div class="p-6 sm:p-8 bg-gradient-to-r from-rose-50/80 via-white to-rose-50/40 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-[#6B1D2F] text-white px-3 py-1 rounded-full text-xs font-bold mb-2 shadow-sm">
+            <span>👤 Dashboard Pengguna</span>
+            <span>•</span>
+            <span>Profil Akun & Riwayat Transaksi</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-800">
+            Pesanan Saya & Personalisasi Akun
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Lihat semua tiket aktif penerbangan & bus, e-ticket dengan barcode scanner, riwayat reschedule, status refund transparan, dan pengaturan data profil Anda.
+          </p>
+        </div>
+
+        <!-- Quick Summary Card -->
+        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-rose-100 shadow-sm">
+          <div class="relative">
+            <img id="dashboardCardAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-16 h-16 rounded-full object-cover ring-4 ring-rose-100 shadow">
+            <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+          </div>
+          <div>
+            <h4 id="dashboardCardName" class="font-black text-slate-800 text-base leading-tight">Azka Putra Perdana</h4>
+            <span id="dashboardCardMembership" class="text-[10px] bg-amber-100 text-amber-800 font-extrabold px-2 py-0.5 rounded-full inline-block mt-0.5">Wara Platinum Member</span>
+            <div class="flex items-center gap-3 text-xs text-slate-500 mt-1.5 font-medium">
+              <span id="dashboardCardPoints" class="font-bold text-[#6B1D2F]">⭐ 4.250 Poin</span>
+              <span>•</span>
+              <span id="dashboardCardHome">📍 Jakarta</span>
+            </div>
+          </div>
+          <button onclick="window.openEditProfileModal()" 
+                  class="ml-2 bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow transition-all flex items-center gap-1.5">
+            <span>✏️</span> Edit Profil
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive History & Profile Tabs Bar -->
+      <div class="p-6 sm:p-8 space-y-6">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          
+          <!-- Category Filter Tabs -->
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="dashboardHistoryTabs">
+            <button onclick="window.filterDashboardBookings('all', this)" class="dash-tab-btn active bg-[#6B1D2F] text-white font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition-all whitespace-nowrap">
+              🎫 Semua Pesanan (<span id="dashCountAll">3</span>)
+            </button>
+            <button onclick="window.filterDashboardBookings('active', this)" class="dash-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all whitespace-nowrap">
+              🛫 Tiket Aktif (<span id="dashCountActive">2</span>)
+            </button>
+            <button onclick="window.filterDashboardBookings('refund', this)" class="dash-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all whitespace-nowrap">
+              ⏳ Lacak Refund (<span id="dashCountRefund">0</span>)
+            </button>
+            <button onclick="window.filterDashboardBookings('done', this)" class="dash-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all whitespace-nowrap">
+              ✓ Selesai (<span id="dashCountDone">1</span>)
+            </button>
+            <button onclick="window.filterDashboardBookings('wishlist', this)" class="dash-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all whitespace-nowrap">
+              ❤️ Wishlist Destinasi (<span id="dashCountWishlist">4</span>)
+            </button>
+          </div>
+
+          <!-- Live Search Bar within History -->
+          <div class="relative w-full sm:w-64">
+            <input type="text" id="dashboardSearchInput" oninput="window.searchDashboardBookings(this.value)" placeholder="Cari kode booking / kota..." 
+                   class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F]">
+            <span class="absolute left-2.5 top-2.5 text-slate-400 text-xs">🔍</span>
+          </div>
+
+        </div>
+
+        <!-- Booking Cards Grid Display in Dashboard -->
+        <div id="dashboardBookingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Populated dynamically by js/app.js -->
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Itinerary Builder Section -->
+  <section id="itinerarySection" class="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-rose-50 text-[#6B1D2F] px-3 py-1 rounded-full text-xs font-bold mb-2 border border-rose-100">
+            <span>🗺️ Personal Travel Planner</span>
+            <span>•</span>
+            <span>Interactive Itinerary Builder</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-800">
+            Susun Jadwal Liburan Harianmu Secara Presisi
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Atur urutan aktivitas wisata, tempat kuliner, dan waktu transit. Tandai checklist yang telah dikunjungi dan simpan atau cetak dalam format rapi.
+          </p>
+        </div>
+
+        <!-- Day Tabs Switcher -->
+        <div id="itineraryDayTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <!-- Injected by js/itinerary.js -->
+        </div>
+      </div>
+
+      <!-- Main Itinerary Content Area -->
+      <div id="itineraryContentArea">
+        <!-- Injected by js/itinerary.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Featured Recommendations Section -->
+  <section class="py-14 bg-gradient-to-b from-[#F8F9FA] via-rose-50/30 to-[#F8F9FA] border-y border-slate-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+      
+      <!-- 1. Iconic Attractions Carousel/Grid -->
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#6B1D2F]">Rekomendasi Terbaik Dunia</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-0.5">Atraksi & Taman Hiburan Ikonik Asia & Eropa</h2>
+          </div>
+          <button onclick="window.SearchManagerInstance.switchTab('wisata'); document.getElementById('searchResultsSection').scrollIntoView({behavior:'smooth'});" 
+                  class="text-xs font-extrabold text-[#6B1D2F] hover:underline flex items-center gap-1">
+            <span>Lihat Semua Atraksi</span>
+            <span>→</span>
+          </button>
+        </div>
+        <div id="featuredAttractionsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Injected by js/app.js -->
+        </div>
+      </div>
+
+      <!-- 2. Local Culinary Recommendations -->
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#6B1D2F]">Eksplorasi Rasa</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-0.5">Kuliner Legendaris & Khas Daerah</h2>
+          </div>
+          <span class="text-xs text-slate-500 font-medium">Disukai warga lokal dan traveler dunia</span>
+        </div>
+        <div id="featuredCulinaryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Injected by js/app.js -->
+        </div>
+      </div>
+
+      <!-- 3. Packages & Deals Section -->
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#6B1D2F]">Hemat Hingga 25%</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-0.5">Paket Bundling Liburan (Tiket + Hotel + Tour)</h2>
+          </div>
+          <button onclick="window.SearchManagerInstance.switchTab('bundling'); document.getElementById('searchResultsSection').scrollIntoView({behavior:'smooth'});" 
+                  class="text-xs font-extrabold text-[#6B1D2F] hover:underline flex items-center gap-1">
+            <span>Semua Promo Bundling</span>
+            <span>→</span>
+          </button>
+        </div>
+        <div id="featuredDealsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Injected by js/app.js -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-300 pt-16 pb-12 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+        
+        <!-- Brand Info -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-2">
+            <img src="assets/logo.svg" alt="Wara Wiri" class="h-10 w-auto brightness-0 invert">
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Wara Wiri adalah platform e-tourism dan pariwisata modern berkonsep <i>Traveloka Lite</i> yang menyajikan kemudahan pemesanan tiket penerbangan, bus antar-kota di Indonesia, hotel ternama, serta atraksi di Asia dan Eropa.
+          </p>
+          <div class="flex items-center gap-3 text-xs text-slate-400">
+            <span>🔒 Transaksi Aman 256-Bit SSL</span>
+            <span>•</span>
+            <span>🛡️ Mitra Resmi Terdaftar</span>
+          </div>
+        </div>
+
+        <!-- Layanan -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-3">Layanan Pemesanan</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="#" onclick="window.SearchManagerInstance.switchTab('flight')" class="hover:text-white transition-colors">Tiket Pesawat Domestik & Internasional</a></li>
+            <li><a href="#" onclick="window.SearchManagerInstance.switchTab('bus')" class="hover:text-white transition-colors">Bus Antar-Kota Indonesia</a></li>
+            <li><a href="#" onclick="window.SearchManagerInstance.switchTab('hotel')" class="hover:text-white transition-colors">Hotel Mewah & Tepercaya</a></li>
+            <li><a href="#" onclick="window.SearchManagerInstance.switchTab('wisata')" class="hover:text-white transition-colors">Tiket Wisata & Theme Park</a></li>
+            <li><a href="#" onclick="window.SearchManagerInstance.switchTab('bundling')" class="hover:text-white transition-colors">Paket Tour Bundling Hemat</a></li>
+          </ul>
+        </div>
+
+        <!-- Bantuan & Kebijakan -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-3">Bantuan & Kebijakan</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="#userDashboardSection" onclick="window.filterDashboardBookings('all')" class="hover:text-white transition-colors">Pesanan & Riwayat Saya</a></li>
+            <li><a href="javascript:void(0)" onclick="window.LiveChatInstance.toggleChat()" class="text-rose-300 hover:text-white font-bold transition-colors">💬 Live Chat Customer Care 24/7</a></li>
+            <li><a href="#" onclick="showToast('Panduan Reschedule: Buka tiket aktif di dashboard, lalu klik tombol Reschedule untuk memilih tanggal baru.', 'info')" class="hover:text-white transition-colors">Prosedur Reschedule Tiket</a></li>
+            <li><a href="#" onclick="showToast('Panduan Refund: Buka tiket aktif di dashboard, klik Refund untuk melihat transparansi kalkulasi dan pilih metode transfer.', 'info')" class="hover:text-white transition-colors">Prosedur Pengajuan Refund</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan Layanan</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Pusat Bantuan & FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Kontak Layanan Pelanggan -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-3">Layanan Pelanggan 24/7</h4>
+          <div class="space-y-2 text-xs text-slate-400">
+            <p class="text-slate-200 font-bold">Call Center Bebas Pulsa:</p>
+            <p class="text-rose-400 font-black text-sm">021-500-WARA (9272)</p>
+            <p class="text-slate-200 font-bold mt-2">Email Layanan:</p>
+            <p>cs@warawiri.id</p>
+            <p class="text-slate-200 font-bold mt-2">WhatsApp Priority:</p>
+            <p>+62 812-8899-WARA</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+          © 2026 PT Wara Wiri Pariwisata Nusantara. All Rights Reserved.
+        </div>
+        <div class="flex items-center gap-4">
+          <span>Skema Warna: Calm Burgundy</span>
+          <span>•</span>
+          <span>Traveloka Lite Version 2.0</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== GLOBAL MODALS & DRAWERS ==================== -->
+
+  <!-- 1. LIVE FLIGHT & BUS SEAT SELECTOR MODAL -->
+  <div id="seatSelectorModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col">
+      <div class="p-5 border-b border-slate-100 flex items-start justify-between">
+        <div>
+          <h3 id="seatModalTitle" class="text-base sm:text-lg font-black text-slate-800">Pilih Kursi</h3>
+          <p id="seatModalSubtitle" class="text-xs text-slate-500 font-medium mt-0.5">Pilih kursi favoritmu pada denah interaktif di bawah.</p>
+        </div>
+        <button onclick="window.SeatSelectorInstance.close()" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+
+      <div class="flex items-center justify-center gap-4 py-2.5 bg-slate-50 border-b border-slate-100 text-[11px] font-bold text-slate-600">
+        <div class="flex items-center gap-1.5">
+          <div class="w-4 h-4 rounded bg-white border border-slate-300"></div>
+          <span>Tersedia</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-4 h-4 rounded bg-[#6B1D2F] text-white flex items-center justify-center text-[9px]">✓</div>
+          <span class="text-[#6B1D2F]">Dipilih</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-4 h-4 rounded bg-slate-200 border border-slate-300 text-slate-400 flex items-center justify-center text-[9px]">✕</div>
+          <span class="text-slate-400">Terisi</span>
+        </div>
+      </div>
+
+      <div id="seatCabinContainer" class="p-5 flex-1 overflow-y-auto max-h-96"></div>
+
+      <div class="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/80 rounded-b-3xl flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500 font-medium">Kursi Terpilih:</div>
+          <div id="seatSummarySelected" class="text-sm font-extrabold text-[#6B1D2F]">Belum dipilih</div>
+          <div id="seatSummaryPrice" class="text-xs font-bold text-slate-700 mt-0.5">Rp 0</div>
+        </div>
+        <button id="seatConfirmBtn" onclick="window.SeatSelectorInstance.confirm()" 
+                class="bg-[#6B1D2F] hover:bg-[#800020] text-white font-extrabold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-all shadow-md active:scale-98">
+          Konfirmasi Kursi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CHECKOUT & PAYMENT MODAL -->
+  <div id="paymentModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="p-5 bg-gradient-to-r from-[#4A0E17] to-[#6B1D2F] text-white flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-200">Konfirmasi Pembayaran</span>
+          <h3 class="text-lg font-black mt-0.5">Wara Wiri Checkout</h3>
+        </div>
+        <button onclick="window.closePaymentModal()" class="text-white/80 hover:text-white text-lg">✕</button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div class="bg-rose-50/60 p-4 rounded-2xl border border-rose-100 space-y-2">
+          <h4 id="checkoutTitle" class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">Penerbangan Jakarta ke Bali</h4>
+          <p id="checkoutProvider" class="text-xs font-semibold text-slate-500">Garuda Indonesia (GA-404)</p>
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-rose-200/60 text-slate-600">
+            <span id="checkoutDate">Tanggal: 2026-11-20</span>
+            <span id="checkoutSeat" class="font-bold text-[#6B1D2F]">Kursi: 12A</span>
+          </div>
+          <div class="text-xs text-slate-600">
+            <span>Nama Penumpang: </span>
+            <span id="checkoutPassenger" class="font-bold text-slate-800">Azka Putra Perdana</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-extrabold text-slate-700 block mb-2">Pilih Metode Pembayaran</label>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center justify-between p-3 rounded-xl border border-rose-200 bg-rose-50/30 cursor-pointer">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="payMethod" checked class="accent-[#6B1D2F]">
+                <span class="font-bold text-slate-800">BCA Virtual Account</span>
+              </div>
+              <span class="font-bold text-slate-400 text-[11px]">Bebas Biaya Admin</span>
+            </label>
+            <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 cursor-pointer">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="payMethod" class="accent-[#6B1D2F]">
+                <span class="font-bold text-slate-800">GoPay / QRIS Instant</span>
+              </div>
+              <span class="font-bold text-slate-400 text-[11px]">Scan Langsung</span>
+            </label>
+            <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 cursor-pointer">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="payMethod" class="accent-[#6B1D2F]">
+                <span class="font-bold text-slate-800">Kartu Kredit / Debit Visa & Mastercard</span>
+              </div>
+              <span class="font-bold text-slate-400 text-[11px]">Cicilan 0%</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-slate-400 block font-medium">Total Tagihan Final</span>
+            <span id="checkoutPrice" class="text-2xl font-black text-[#800020]">Rp 1.350.000</span>
+          </div>
+          <button id="confirmPaymentBtn" onclick="window.processPayment()" 
+                  class="bg-[#6B1D2F] hover:bg-[#800020] text-white font-black text-sm px-6 py-3 rounded-xl shadow-lg transition-all active:scale-98">
+            Bayar Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. E-TICKET & BOARDING PASS MODAL -->
+  <div id="eTicketModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden ticket-printable">
+      <div class="bg-[#6B1D2F] p-5 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="assets/logo.svg" alt="Wara Wiri" class="h-7 w-auto brightness-0 invert">
+          <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-extrabold tracking-wider">OFFICIAL E-TICKET</span>
+        </div>
+        <button onclick="window.closeTicketModal()" class="text-white hover:opacity-80 text-lg no-print">✕</button>
+      </div>
+
+      <div class="p-6 relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">KODE PEMESANAN</span>
+            <span id="ticketBookingCode" class="text-lg font-black text-[#6B1D2F] tracking-wider">WW-GA-89211</span>
+          </div>
+          <span id="ticketStatusBadge" class="bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full border border-emerald-200">
+            Aktif
+          </span>
+        </div>
+
+        <div>
+          <span id="ticketServiceType" class="text-[10px] font-black text-[#800020] uppercase tracking-wider block">BOARDING PASS</span>
+          <h4 id="ticketTitle" class="text-base font-black text-slate-800 leading-snug">Penerbangan Jakarta (CGK) ke Bali (DPS)</h4>
+          <p id="ticketProvider" class="text-xs text-slate-500 font-semibold mt-0.5">Garuda Indonesia (GA-404)</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-xs">
+          <div>
+            <span class="text-slate-400 font-medium block">Tanggal:</span>
+            <span id="ticketDate" class="font-bold text-slate-800">2026-11-20</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-medium block">Nomor Kursi:</span>
+            <span id="ticketSeat" class="font-extrabold text-[#6B1D2F]">12A (Window)</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-medium block">Jadwal Berangkat:</span>
+            <span id="ticketDeparture" class="font-bold text-slate-800">07:30 WIB</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-medium block">Estimasi Tiba:</span>
+            <span id="ticketArrival" class="font-bold text-slate-800">10:20 WITA</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 text-xs">
+          <div>
+            <span class="text-slate-400 font-medium block">Nama Penumpang:</span>
+            <span id="ticketPassengerName" class="font-bold text-slate-800 text-sm">Azka Putra Perdana</span>
+          </div>
+          <div class="text-right">
+            <span class="text-slate-400 font-medium block">Total Pembayaran:</span>
+            <span id="ticketAmount" class="font-black text-[#800020] text-sm">Rp 1.350.000</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-dashed border-slate-300 flex flex-col items-center justify-center text-center">
+          <div class="w-64 h-12 flex items-center justify-between px-2 bg-slate-50 rounded border border-slate-200">
+            <div class="w-1.5 h-8 bg-slate-800"></div>
+            <div class="w-0.5 h-8 bg-slate-800"></div>
+            <div class="w-2 h-8 bg-slate-800"></div>
+            <div class="w-1 h-8 bg-slate-800"></div>
+            <div class="w-3 h-8 bg-slate-800"></div>
+            <div class="w-0.5 h-8 bg-slate-800"></div>
+            <div class="w-2 h-8 bg-slate-800"></div>
+            <div class="w-1.5 h-8 bg-slate-800"></div>
+            <div class="w-3 h-8 bg-slate-800"></div>
+            <div class="w-1 h-8 bg-slate-800"></div>
+            <div class="w-2 h-8 bg-slate-800"></div>
+            <div class="w-0.5 h-8 bg-slate-800"></div>
+          </div>
+          <span class="text-[10px] text-slate-400 mt-1 font-mono">Tunjukkan barcode ini saat check-in bandara / boarding bus</span>
+        </div>
+
+        <div class="pt-2 flex gap-2 no-print">
+          <button id="ticketDownloadBtn" class="flex-1 bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs font-extrabold py-2.5 rounded-xl transition-all shadow-sm">
+            📥 Unduh E-Ticket (PDF)
+          </button>
+          <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl transition-colors">
+            🖨️ Cetak
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. RESCHEDULE MODAL -->
+  <div id="rescheduleModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700">Layanan Tiket</span>
+          <h3 class="text-lg font-black text-slate-800">Ajukan Reschedule</h3>
+        </div>
+        <button onclick="window.closeRescheduleModal()" class="text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+
+      <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1">
+        <h5 id="rescheduleTitle" class="font-bold">Penerbangan</h5>
+        <p id="rescheduleBookingCode" class="font-mono text-[11px] text-amber-700 font-bold">Kode: WW-GA-89211</p>
+        <p id="rescheduleOldDate" class="text-slate-600">Jadwal Saat Ini: 2026-11-20</p>
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-700 block mb-1">Pilih Tanggal Baru Keberangkatan</label>
+        <input type="date" id="rescheduleNewDateInput" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-700 block mb-1">Alasan Perubahan Jadwal</label>
+        <select id="rescheduleReasonInput" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold text-slate-800 focus:outline-none">
+          <option value="Perubahan jadwal kerja/pribadi">Perubahan jadwal kerja / pribadi</option>
+          <option value="Kondisi kesehatan mendesak">Kondisi kesehatan mendesak</option>
+          <option value="Menyesuaikan jadwal cuti">Menyesuaikan jadwal cuti</option>
+        </select>
+      </div>
+
+      <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] text-emerald-800 font-medium">
+        🎉 <b>Bebas Biaya Reschedule Pertama:</b> Promo Wara Wiri Lite menjamin gratis biaya admin untuk perubahan jadwal 1x sebelum H-2.
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="window.closeRescheduleModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+          Batal
+        </button>
+        <button onclick="window.submitReschedule()" class="flex-1 bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs font-extrabold py-2.5 rounded-xl shadow transition-all">
+          Konfirmasi Jadwal Baru
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. COMPREHENSIVE MULTI-STEP REFUND MODAL -->
+  <div id="refundModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+      <div class="p-5 bg-gradient-to-r from-[#4A0E17] via-[#6B1D2F] to-[#800020] text-white flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-rose-200 block">Jaminan Pengembalian Dana</span>
+          <h3 class="text-lg font-black">Pengajuan Refund & Pembatalan Transparan</h3>
+        </div>
+        <button onclick="window.closeRefundModal()" class="text-white/80 hover:text-white text-lg">✕</button>
+      </div>
+
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
+        <div class="bg-rose-50/70 p-4 rounded-2xl border border-rose-200/80 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span id="refundBookingCode" class="font-mono text-xs text-[#6B1D2F] font-black tracking-wider">WW-GA-89211</span>
+            <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">Eligible for Refund</span>
+          </div>
+          <h4 id="refundBookingTitle" class="font-extrabold text-slate-800 text-sm leading-snug">Penerbangan Jakarta (CGK) ke Bali (DPS)</h4>
+          <p id="refundTicketDate" class="text-xs text-slate-600 font-medium">Jadwal Keberangkatan: 2026-11-20 • 07:30 WIB</p>
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-slate-700 block mb-1.5">1. Alasan Pengajuan Pembatalan</label>
+          <select id="refundReasonCategory" onchange="window.recalculateRefundPreview()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F] cursor-pointer">
+            <option value="personal">Perubahan Rencana Perjalanan Pribadi (Potongan Kebijakan 10%)</option>
+            <option value="medical">Kondisi Medis / Sakit Darurat (100% Pengembalian Dana Penuh)</option>
+            <option value="airline_cancel">Penerbangan Dibatalkan / Diubah Maskapai (100% Full Refund)</option>
+            <option value="force_majeure">Bencana Alam / Force Majeure (100% Full Refund)</option>
+            <option value="other">Alasan Lainnya</option>
+          </select>
+
+          <div class="mt-2">
+            <label class="text-[11px] font-semibold text-slate-500 block mb-1">Catatan Tambahan / Keterangan:</label>
+            <textarea id="refundReasonInput" rows="2" placeholder="Tuliskan keterangan detail alasan refund Anda..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-700 focus:outline-none"></textarea>
+          </div>
+
+          <div class="mt-2 p-2.5 bg-slate-50 border border-dashed border-slate-300 rounded-xl flex items-center justify-between text-xs text-slate-500">
+            <span class="flex items-center gap-1.5">
+              <span>📎</span> <span id="refundUploadLabel">Lampirkan Bukti (Surat Dokter / Tiket Maskapai)</span>
+            </span>
+            <label class="cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] font-bold text-[#6B1D2F] hover:bg-rose-50 transition-colors">
+              Pilih Berkas
+              <input type="file" id="refundEvidenceInput" onchange="window.handleRefundFileUpload(this)" class="hidden">
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
+          <div class="flex items-center justify-between font-extrabold text-slate-700 border-b border-slate-200 pb-2">
+            <span>Rincian Kalkulasi Transparan</span>
+            <span class="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-bold">Kebijakan Resmi Maskapai</span>
+          </div>
+          
+          <div class="flex justify-between text-slate-600">
+            <span>Harga Tiket Asli Pembelian:</span>
+            <span id="refundOriginalAmount" class="font-bold text-slate-800">Rp 1.350.000</span>
+          </div>
+
+          <div class="flex justify-between text-slate-600">
+            <span id="refundFeeLabel">Potongan Biaya Regulasi Maskapai:</span>
+            <span id="refundDeduction" class="text-rose-600 font-bold">-Rp 135.000 (10%)</span>
+          </div>
+
+          <div class="flex justify-between text-slate-600">
+            <span>Pajak Pelayanan Bandara (Refundable):</span>
+            <span id="refundAirportTax" class="text-emerald-700 font-bold">+Rp 108.000 (100%)</span>
+          </div>
+
+          <div id="refundWalletBonusRow" class="hidden flex justify-between text-amber-700 font-bold">
+            <span>Bonus Tambahan Saldo Travel Wallet (+5%):</span>
+            <span id="refundWalletBonusAmount">+Rp 67.500</span>
+          </div>
+
+          <div class="flex justify-between items-center font-black text-slate-800 pt-2.5 border-t border-slate-300 text-sm">
+            <span>Total Dana Bersih yang Diterima:</span>
+            <span id="refundEstimatedAmount" class="text-xl text-[#800020]">Rp 1.323.000</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-slate-700 block mb-2">2. Pilih Metode Pengembalian Dana</label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <label class="p-3 rounded-xl border border-rose-300 bg-rose-50/40 cursor-pointer flex flex-col justify-between hover:bg-rose-50 transition-colors">
+              <div class="flex items-center gap-2 mb-1">
+                <input type="radio" name="refundMethod" value="wallet" onchange="window.selectRefundMethod('wallet')" checked class="accent-[#6B1D2F]">
+                <span class="font-black text-[#6B1D2F]">Wara Wallet</span>
+              </div>
+              <p class="text-[10px] text-slate-500 leading-tight">Instan Hari Ini + Bonus 5% Poin Koin</p>
+            </label>
+
+            <label class="p-3 rounded-xl border border-slate-200 cursor-pointer flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div class="flex items-center gap-2 mb-1">
+                <input type="radio" name="refundMethod" value="bank" onchange="window.selectRefundMethod('bank')" class="accent-[#6B1D2F]">
+                <span class="font-bold text-slate-800">Transfer Bank</span>
+              </div>
+              <p class="text-[10px] text-slate-500 leading-tight">BCA, Mandiri, BRI, BNI (1-3 Hari)</p>
+            </label>
+
+            <label class="p-3 rounded-xl border border-slate-200 cursor-pointer flex flex-col justify-between hover:bg-slate-50 transition-colors">
+              <div class="flex items-center gap-2 mb-1">
+                <input type="radio" name="refundMethod" value="ewallet" onchange="window.selectRefundMethod('ewallet')" class="accent-[#6B1D2F]">
+                <span class="font-bold text-slate-800">E-Wallet</span>
+              </div>
+              <p class="text-[10px] text-slate-500 leading-tight">GoPay, OVO, DANA (1-2 Hari)</p>
+            </label>
+          </div>
+
+          <div id="refundAccountForm" class="mt-3 space-y-2 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label id="refundProviderLabel" class="font-bold text-slate-700 block mb-1">Pilihan Bank</label>
+                <select id="refundBankInput" class="w-full bg-white border border-slate-300 rounded-lg p-2 font-semibold text-slate-800 focus:outline-none">
+                  <option value="Bank BCA">Bank BCA</option>
+                  <option value="Bank Mandiri">Bank Mandiri</option>
+                  <option value="Bank BRI">Bank BRI</option>
+                  <option value="Bank BNI">Bank BNI</option>
+                  <option value="Bank CIMB Niaga">Bank CIMB Niaga</option>
+                </select>
+              </div>
+              <div>
+                <label id="refundNumberLabel" class="font-bold text-slate-700 block mb-1">Nomor Rekening</label>
+                <input type="text" id="refundAccountNumInput" placeholder="Contoh: 8820192812" value="8820192812" class="w-full bg-white border border-slate-300 rounded-lg p-2 font-bold text-slate-800 focus:outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Pemilik Rekening</label>
+              <input type="text" id="refundHolderInput" value="Azka Putra Perdana" class="w-full bg-white border border-slate-300 rounded-lg p-2 font-bold text-slate-800 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <label class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 cursor-pointer text-xs text-amber-900">
+          <input type="checkbox" id="refundAgreeCheckbox" checked class="accent-[#6B1D2F] mt-0.5">
+          <span>Saya memahami bahwa setelah pengajuan ini disetujui, tiket yang dibatalkan tidak dapat lagi dipergunakan untuk perjalanan.</span>
+        </label>
+      </div>
+
+      <div class="p-4 sm:p-5 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+        <button onclick="window.closeRefundModal()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl border border-slate-200 transition-colors">
+          Batal
+        </button>
+        <button onclick="window.submitRefund()" class="bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs sm:text-sm font-black py-2.5 px-6 rounded-xl shadow-md transition-all active:scale-98">
+          Ajukan Pengembalian Dana
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. REFUND TRACKING & LIVE STATUS MODAL -->
+  <div id="refundTrackingModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="p-5 bg-gradient-to-r from-[#4A0E17] to-[#6B1D2F] text-white flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-200">Pelacakan Real-Time</span>
+          <h3 class="text-base sm:text-lg font-black mt-0.5">Status Pengembalian Dana</h3>
+        </div>
+        <button onclick="window.closeRefundTrackingModal()" class="text-white hover:opacity-80 text-lg">✕</button>
+      </div>
+
+      <div class="p-6 space-y-5">
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">ID REFUND RESMI</span>
+            <span id="trackRefundId" class="text-sm font-black text-[#6B1D2F] tracking-wider">RF-2026-98124</span>
+            <span id="trackTicketTitle" class="text-xs text-slate-600 font-semibold block mt-0.5">Penerbangan Jakarta ke Bali</span>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">TOTAL PENGEMBALIAN</span>
+            <span id="trackRefundAmount" class="text-lg font-black text-[#800020]">Rp 1.215.000</span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <span class="text-xs font-black text-slate-700 block">Tahapan Proses Pengembalian:</span>
+          <div id="trackTimelineContainer" class="space-y-3 pl-2"></div>
+        </div>
+
+        <div class="bg-rose-50/60 p-3.5 rounded-xl border border-rose-100 text-xs text-slate-700 space-y-1">
+          <div class="flex justify-between">
+            <span class="text-slate-500">Tujuan Pencairan:</span>
+            <span id="trackTargetProvider" class="font-bold text-slate-800">Bank BCA</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">No. Rekening / ID:</span>
+            <span id="trackTargetNumber" class="font-bold text-slate-800">8820192812</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Atas Nama:</span>
+            <span id="trackTargetHolder" class="font-bold text-slate-800">Azka Putra Perdana</span>
+          </div>
+          <div class="flex justify-between pt-1 border-t border-rose-200/60">
+            <span class="text-slate-500">Estimasi Masuk:</span>
+            <span id="trackEstimatedArrival" class="font-black text-[#800020]">1 - 3 Hari Kerja</span>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-100 rounded-xl border border-slate-200 text-xs flex items-center justify-between">
+          <div>
+            <span class="font-bold text-slate-700 block">Simulasi Alur Refund (Demo):</span>
+            <span class="text-[10px] text-slate-500">Klik untuk melihat perubahan status hingga dana cair</span>
+          </div>
+          <button id="trackAdvanceStepBtn" onclick="window.advanceRefundDemoStep()" class="bg-[#6B1D2F] hover:bg-[#800020] text-white text-[11px] font-black px-3 py-1.5 rounded-lg transition-all shadow-sm">
+            Percepat Status ⏩
+          </button>
+        </div>
+
+        <div class="flex gap-2 pt-1">
+          <button id="trackCancelRefundBtn" onclick="window.cancelActiveRefund()" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold py-2.5 rounded-xl border border-rose-200 transition-colors">
+            Batalkan Refund
+          </button>
+          <button onclick="window.closeRefundTrackingModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. USER PROFILE & MY TRIPS DRAWER -->
+  <div id="userProfileDrawer" class="hidden fixed inset-0 z-50 overflow-hidden bg-slate-900/60 backdrop-blur-sm flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col transform transition-transform">
+      
+      <!-- Drawer Header -->
+      <div class="p-5 bg-gradient-to-r from-[#4A0E17] to-[#6B1D2F] text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img id="drawerAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-12 h-12 rounded-full object-cover ring-2 ring-white/50">
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 id="profileDrawerName" class="font-black text-base leading-tight">Azka Putra Perdana</h4>
+            </div>
+            <span id="profileDrawerMembership" class="text-[10px] bg-amber-400 text-slate-900 font-black px-2 py-0.5 rounded-full inline-block mt-0.5">Wara Platinum Member</span>
+          </div>
+        </div>
+        <button onclick="window.closeUserProfileDrawer()" class="text-white hover:opacity-80 text-lg">✕</button>
+      </div>
+
+      <!-- Quick Customization Pill Button -->
+      <div class="p-3 bg-rose-50/70 border-b border-rose-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-600 font-semibold" id="drawerHomeCityBadge">📍 Asal: Jakarta</span>
+          <span class="text-slate-300">•</span>
+          <span class="text-xs text-[#6B1D2F] font-bold" id="drawerTravelStyleBadge">Solo & Explorer</span>
+        </div>
+        <button onclick="window.openEditProfileModal()" 
+                class="bg-white hover:bg-[#6B1D2F] hover:text-white text-[#6B1D2F] text-xs font-black px-3 py-1.5 rounded-xl border border-rose-200 shadow-sm transition-all flex items-center gap-1.5">
+          <span>✏️</span> Kustomisasi Profil
+        </button>
+      </div>
+
+      <!-- Quick Stats Row -->
+      <div class="grid grid-cols-2 p-3 bg-white border-b border-slate-100 text-center text-xs">
+        <div class="border-r border-slate-200">
+          <span class="text-[10px] text-slate-500 font-semibold block">Reward Points</span>
+          <span id="profileDrawerPoints" class="font-black text-[#6B1D2F] text-sm">4.250 Poin</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-500 font-semibold block">Kontak Akun</span>
+          <span id="profileDrawerPhone" class="font-bold text-slate-700 text-[11px]">+62 812-8899-7766</span>
+        </div>
+      </div>
+
+      <!-- Drawer Content Tabs / Scrollable Area -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-6">
+        
+        <!-- Active Tickets & Bookings Section -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="font-black text-slate-800 text-sm flex items-center gap-2">
+              <span>🎫</span> Tiket & Transaksi Saya
+            </h4>
+            <span class="text-[11px] font-bold text-slate-400" id="profileBookingCount">3 Tiket</span>
+          </div>
+          <div id="profileBookingsContainer" class="space-y-3">
+            <!-- Injected by js/app.js -->
+          </div>
+        </div>
+
+        <!-- Saved Wishlist Destinations -->
+        <div>
+          <h4 class="font-black text-slate-800 text-sm mb-3 flex items-center gap-2">
+            <span>❤️</span> Destinasi Favorit (Wishlist)
+          </h4>
+          <div id="profileWishlistContainer" class="space-y-2">
+            <!-- Injected by js/app.js -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="p-3.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+        <span id="profileDrawerEmail" class="text-xs text-slate-400 font-medium">azka.putra@warawiri.id</span>
+        <a href="#userDashboardSection" onclick="window.closeUserProfileDrawer()" class="text-xs font-extrabold text-[#6B1D2F] hover:underline">
+          Buka Dashboard Lengkap →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 8. PROFILE CUSTOMIZATION MODAL -->
+  <div id="editProfileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="p-5 bg-[#6B1D2F] text-white flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-200">Personalisasi Akun</span>
+          <h3 class="text-lg font-black mt-0.5">Kustomisasi Profil Pengguna</h3>
+        </div>
+        <button onclick="window.closeEditProfileModal()" class="text-white hover:opacity-80 text-lg">✕</button>
+      </div>
+
+      <form id="editProfileForm" onsubmit="window.saveProfileCustomization(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div>
+          <label class="text-xs font-black text-slate-700 block mb-2">Pilih Foto Profil (Avatar)</label>
+          <div class="flex items-center gap-3 mb-3">
+            <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Preview" class="w-14 h-14 rounded-full object-cover ring-2 ring-[#6B1D2F]">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Pilih Karakter atau Unggah Foto</span>
+              <label class="inline-block mt-1 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-lg transition-colors border border-slate-200">
+                📁 Upload Foto dari Perangkat
+                <input type="file" id="avatarFileInput" accept="image/*" onchange="window.handleAvatarFileUpload(this)" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-6 gap-2 pt-1">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+            <img onclick="window.selectPresetAvatar(this.src)" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-[#6B1D2F] cursor-pointer transition-all hover:scale-110">
+          </div>
+          <input type="hidden" id="editAvatarUrl" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80">
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-slate-700 block mb-1">Nama Lengkap (Sesuai KTP / Paspor)</label>
+          <input type="text" id="editFullName" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="font-black text-slate-700 block mb-1">Alamat Email</label>
+            <input type="email" id="editEmail" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+          </div>
+          <div>
+            <label class="font-black text-slate-700 block mb-1">Nomor WhatsApp / HP</label>
+            <input type="tel" id="editPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="font-black text-slate-700 block mb-1">Kota Asal Favorit</label>
+            <select id="editHomeCity" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+              <option value="Jakarta (CGK)">Jakarta (CGK)</option>
+              <option value="Surabaya (SUB)">Surabaya (SUB)</option>
+              <option value="Bandung (BDO)">Bandung (BDO)</option>
+              <option value="Bali (DPS)">Bali (DPS)</option>
+              <option value="Yogyakarta (YIA)">Yogyakarta (YIA)</option>
+              <option value="Medan (KNO)">Medan (KNO)</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-black text-slate-700 block mb-1">Gaya Traveling</label>
+            <select id="editTravelStyle" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+              <option value="Solo & Explorer">Solo & Explorer</option>
+              <option value="Family & Leisure">Family & Leisure</option>
+              <option value="Couple Romantic">Couple Romantic</option>
+              <option value="Luxury Seeker">Luxury Seeker</option>
+              <option value="Budget Backpacker">Budget Backpacker</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-slate-700 block mb-1">Bio / Motto Perjalanan</label>
+          <textarea id="editBio" rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-xs text-slate-700 focus:outline-none"></textarea>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="window.closeEditProfileModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+            Batal
+          </button>
+          <button type="submit" class="flex-1 bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs font-black py-2.5 rounded-xl shadow transition-all">
+            Simpan Perubahan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. WEATHER DETAIL MODAL -->
+  <div id="weatherDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#6B1D2F]">Update Cuaca Real-Time</span>
+          <h3 id="weatherModalCity" class="text-lg font-black text-slate-800">Bali, Indonesia</h3>
+        </div>
+        <button onclick="window.WeatherServiceInstance.closeWeatherModal()" class="text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+
+      <div class="text-center py-4 bg-gradient-to-br from-rose-50 to-amber-50 rounded-2xl border border-rose-100">
+        <span class="text-4xl block mb-1">☀️</span>
+        <div id="weatherModalTemp" class="text-4xl font-black text-[#800020]">29°C</div>
+        <span id="weatherModalCondition" class="text-xs font-bold text-slate-600 block mt-1">Cerah Tropis</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-center text-xs">
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <span class="text-slate-400 block text-[10px]">Kelembaban</span>
+          <span id="weatherModalHumidity" class="font-extrabold text-slate-800">72%</span>
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <span class="text-slate-400 block text-[10px]">Kecepatan Angin</span>
+          <span id="weatherModalWind" class="font-extrabold text-slate-800">14 km/j</span>
+        </div>
+      </div>
+
+      <div>
+        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block mb-2">Prakiraan 3 Hari Mendatang</span>
+        <div id="weatherModalForecast" class="grid grid-cols-3 gap-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. DESTINATION DETAIL MODAL -->
+  <div id="destinationDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="relative h-56 overflow-hidden">
+        <img id="destModalImg" src="" alt="Destinasi" class="w-full h-full object-cover">
+        <span id="destModalRegionBadge" class="absolute top-3 left-3 bg-[#6B1D2F] text-white text-xs font-black px-3 py-1 rounded-full shadow">
+          INDONESIA • DPS
+        </span>
+        <button onclick="window.closeDestinationModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-colors">✕</button>
+      </div>
+
+      <div class="p-6 space-y-3">
+        <h3 id="destModalTitle" class="text-xl font-black text-slate-800">Bali, Indonesia</h3>
+        <p id="destModalTagline" class="text-xs font-semibold text-[#800020] italic">"Pulau Dewata dengan Magis Alam & Budaya"</p>
+        <p id="destModalDesc" class="text-xs text-slate-600 leading-relaxed"></p>
+
+        <div id="destModalTags" class="flex flex-wrap gap-1.5 pt-1"></div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-slate-400 block font-medium">Tiket Mulai Dari</span>
+            <span id="destModalPrice" class="text-xl font-black text-[#800020]">Rp 950.000</span>
+          </div>
+          <button id="destModalSelectBtn" class="bg-[#6B1D2F] hover:bg-[#800020] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow transition-all">
+            Pilih Kota Ini & Pesan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. ADD ITINERARY ITEM MODAL -->
+  <div id="addItineraryItemModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#6B1D2F]">Jadwal Liburan</span>
+          <h3 class="text-lg font-black text-slate-800">Tambah Aktivitas Baru</h3>
+        </div>
+        <button onclick="window.ItineraryInstance.closeAddItemModal()" class="text-slate-400 hover:text-slate-700">✕</button>
+      </div>
+
+      <form id="addItineraryForm" onsubmit="window.ItineraryInstance.submitNewItem(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Jam Aktivitas</label>
+            <input type="time" id="itTimeInput" value="10:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Estimasi Durasi</label>
+            <input type="text" id="itDurationInput" placeholder="Contoh: 1.5 Jam" value="2 Jam" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 font-semibold text-slate-800 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Nama Aktivitas / Tempat</label>
+          <input type="text" id="itTitleInput" placeholder="Contoh: Snorkeling di Gili Trawangan" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 font-bold text-slate-800 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Kategori</label>
+            <select id="itCategoryInput" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 font-semibold text-slate-800 focus:outline-none">
+              <option value="Wisata Alam">Wisata Alam</option>
+              <option value="Kuliner">Kuliner</option>
+              <option value="Budaya & Candi">Budaya & Candi</option>
+              <option value="Akomodasi">Akomodasi</option>
+              <option value="Transportasi">Transportasi</option>
+              <option value="Belanja">Belanja</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Lokasi / Alamat</label>
+            <input type="text" id="itLocationInput" placeholder="Contoh: Lombok Barat" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 font-semibold text-slate-800 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Catatan Tambahan (Opsional)</label>
+          <textarea id="itNotesInput" rows="2" placeholder="Contoh: Bawa pakaian ganti dan kamera waterproof." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-700 focus:outline-none"></textarea>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="window.ItineraryInstance.closeAddItemModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition-colors">
+            Batal
+          </button>
+          <button type="submit" class="flex-1 bg-[#6B1D2F] hover:bg-[#800020] text-white text-xs font-extrabold py-2.5 rounded-xl shadow transition-all">
+            Simpan ke Jadwal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FLOATING LIVE CHAT SUPPORT WIDGET (24/7) ==================== -->
+  <!-- Floating Toggle Button -->
+  <button id="liveChatToggleBtn" onclick="window.LiveChatInstance.toggleChat()" 
+          class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#6B1D2F] to-[#800020] hover:from-[#800020] hover:to-[#4A0E17] text-white p-3.5 sm:p-4 rounded-full shadow-2xl flex items-center gap-2.5 transition-all transform hover:scale-105 active:scale-95 group focus:outline-none focus:ring-4 focus:ring-rose-300"
+          title="Tanya Sarah (Customer Care 24/7)">
+    <div class="relative">
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 border-2 border-white rounded-full animate-pulse"></span>
+    </div>
+    <span class="hidden sm:inline font-black text-xs tracking-wide">Live Chat 24/7</span>
+    <span id="liveChatBadge" class="bg-amber-400 text-slate-900 text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-sm">1</span>
+  </button>
+
+  <!-- Live Chat Widget Modal Window -->
+  <div id="liveChatWidget" class="hidden fixed bottom-24 right-4 sm:right-6 z-50 w-[92vw] sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col transition-all duration-300">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-[#6B1D2F] to-[#800020] p-4 text-white flex items-center justify-between shadow-md">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80" 
+               alt="Sarah CS" class="w-10 h-10 rounded-full object-cover ring-2 ring-white/50">
+          <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-[#6B1D2F] rounded-full"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h4 class="font-black text-sm text-white">Sarah</h4>
+            <span class="bg-white/20 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded">Travel Specialist</span>
+          </div>
+          <span class="text-[11px] text-rose-100 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Online • Bantuan 24 Jam
+          </span>
+        </div>
+      </div>
+      <button onclick="window.LiveChatInstance.toggleChat()" class="p-1.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Quick FAQ Chips Slider -->
+    <div class="bg-rose-50/70 border-b border-rose-100/80 px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px] whitespace-nowrap">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0">Pilihan Cepat:</span>
+      <button onclick="window.LiveChatInstance.sendQuickPrompt('Bagaimana cara memesan tiket ke Berlin dan Eropa?')" class="bg-white hover:bg-rose-100/60 text-[#6B1D2F] px-2.5 py-1 rounded-full border border-rose-200 font-bold transition-colors flex-shrink-0">
+        ✈️ Tiket Berlin & Eropa
+      </button>
+      <button onclick="window.LiveChatInstance.sendQuickPrompt('Bagaimana prosedur refund tiket saya?')" class="bg-white hover:bg-rose-100/60 text-[#6B1D2F] px-2.5 py-1 rounded-full border border-rose-200 font-bold transition-colors flex-shrink-0">
+        💸 Refund Transparan
+      </button>
+      <button onclick="window.LiveChatInstance.sendQuickPrompt('Bagaimana cara reschedule jadwal tiket?')" class="bg-white hover:bg-rose-100/60 text-[#6B1D2F] px-2.5 py-1 rounded-full border border-rose-200 font-bold transition-colors flex-shrink-0">
+        🔄 Reschedule Tiket
+      </button>
+      <button onclick="window.LiveChatInstance.sendQuickPrompt('Bagaimana cara memilih nomor kursi pesawat atau bus?')" class="bg-white hover:bg-rose-100/60 text-[#6B1D2F] px-2.5 py-1 rounded-full border border-rose-200 font-bold transition-colors flex-shrink-0">
+        💺 Denah & Pilih Kursi
+      </button>
+      <button onclick="window.LiveChatInstance.sendQuickPrompt('Apa promo paket bundling liburan yang tersedia?')" class="bg-white hover:bg-rose-100/60 text-[#6B1D2F] px-2.5 py-1 rounded-full border border-rose-200 font-bold transition-colors flex-shrink-0">
+        🎁 Promo Bundling
+      </button>
+    </div>
+
+    <!-- Chat Message Stream -->
+    <div id="liveChatMessages" class="h-80 overflow-y-auto p-4 space-y-2 bg-gradient-to-b from-[#FAF8F8] to-white text-xs">
+      <!-- Injected by LiveChatAssistant -->
+    </div>
+
+    <!-- Agent Typing Indicator -->
+    <div id="liveChatTyping" class="hidden px-4 py-2 bg-white flex items-center gap-2 text-[11px] text-slate-500 font-medium border-t border-slate-50">
+      <div class="flex items-center gap-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#6B1D2F] animate-bounce"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#6B1D2F] animate-bounce" style="animation-delay: 0.15s"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#6B1D2F] animate-bounce" style="animation-delay: 0.3s"></span>
+      </div>
+      <span>Sarah sedang mengetik...</span>
+    </div>
+
+    <!-- Chat Input Form -->
+    <form onsubmit="event.preventDefault(); const inp = document.getElementById('liveChatInput'); window.LiveChatInstance.sendMessage(inp.value);" 
+          class="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+      <input type="text" id="liveChatInput" placeholder="Tulis kendala Anda..." 
+             class="flex-1 bg-slate-100 focus:bg-white border border-slate-200 focus:border-[#6B1D2F] rounded-xl px-3.5 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-colors">
+      <button type="submit" class="bg-[#6B1D2F] hover:bg-[#800020] text-white p-2 sm:px-3 sm:py-2 rounded-xl transition-all shadow-sm active:scale-95 flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-24 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Helper function for map filter active class -->
+  <script>
+    function updateMapFilterStyle(activeBtn) {
+      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-[#6B1D2F]', 'text-white');
+        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+      });
+      activeBtn.classList.add('bg-[#6B1D2F]', 'text-white');
+      activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+    }
+  </script>
+
+  <!-- Application Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/userState.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/seatSelector.js"></script>
+  <script src="js/itinerary.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/livechat.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
