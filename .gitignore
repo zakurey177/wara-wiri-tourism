@@ -12,7 +12,10 @@ desktop.ini
 
 # Logs & Temp
 *.log
+*.zip
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .system_generated/
+
+.vercel
